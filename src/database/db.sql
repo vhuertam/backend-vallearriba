@@ -219,6 +219,7 @@ CREATE TABLE IF NOT EXISTS transport_batchs(
     id_transport_batch text,
     date date,
     condition text,
+    correlative SERIAL,
     id_pelequen_guide uuid,
     id_user uuid,
 
@@ -237,6 +238,7 @@ CREATE TABLE IF NOT EXISTS save_batchs(
     date date,
     totalLiters float,
     condition text,
+    correlative SERIAL,
     id_storage_pond uuid,
     id_user uuid,
     id_transport_batch uuid,
@@ -255,7 +257,7 @@ CREATE TABLE IF NOT EXISTS process_batchs(
     id_process_batch text,
     date date,
     condition text,
-    correlative int AUTO_INCREMENT,
+    correlative SERIAL,
     id_user uuid,
     id_save_batch uuid,
 
@@ -303,6 +305,7 @@ CREATE TABLE IF NOT EXISTS cards(
     gross_weight float,
     contractor text,
     condition text,
+    correlative SERIAL,
     id_bins uuid,
     id_process_batch uuid,
     id_user_register uuid,
@@ -310,7 +313,7 @@ CREATE TABLE IF NOT EXISTS cards(
     id_variety uuid,
     id_save_batch uuid,
     id_transport_batch uuid,
-    id_quarter,
+    id_quarter uuid,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_bins) references bins(id),
