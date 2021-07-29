@@ -216,6 +216,7 @@ CREATE TABLE IF NOT EXISTS process_batchs(
     id_process_batch text,
     date date,
     condition text,
+    residual_weight int,
     correlative SERIAL,
     id_user uuid,
     id_save_batch uuid,
