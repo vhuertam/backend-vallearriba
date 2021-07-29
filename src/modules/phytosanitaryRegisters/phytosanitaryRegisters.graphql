@@ -14,6 +14,7 @@ type PhytosanitaryRegister {
     startDate: Date!
     endDate: Date!
     user: User!
+    product: Product
     section: Section!
     createdAt: Date!
     updatedAt: Date!
@@ -26,6 +27,7 @@ input InputPhytosanitaryRegister {
     endDate: Date!
     idUser: String!
     idSection: String!
+    idProduct: String
 }
 
 input InputPhytosanitaryRegisterEdit {

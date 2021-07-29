@@ -4,6 +4,7 @@ import { UsersRepository } from '../../repository/users.repository';
 import { SectionsRepository } from '../../repository/sections.repository';
 import { PhytosanitaryRegistersRepository } from '../../repository/phytosanitaryRegisters.repository';
 import { PhytosanitaryRegister, InputPhytosanitaryRegister, InputPhytosanitaryRegisterEdit } from '../../graphql.schema';
+import { ProductsRepository } from 'src/repository/products.repository';
 
 @Injectable()
 export class PhytosanitaryRegistersService {
@@ -12,6 +13,7 @@ export class PhytosanitaryRegistersService {
     constructor(
         @InjectRepository(UsersRepository) private usersRepository: UsersRepository,
         @InjectRepository(SectionsRepository) private sectionsRepository: SectionsRepository,
+        @InjectRepository(ProductsRepository) private productsRepository: ProductsRepository,
         @InjectRepository(PhytosanitaryRegistersRepository) private phytosanitaryRegistersRepository: PhytosanitaryRegistersRepository,
     ) { }
 
@@ -27,7 +29,7 @@ export class PhytosanitaryRegistersService {
     async createPhytosanitaryRegister(phytosanitaryRegisterData: InputPhytosanitaryRegister): Promise<PhytosanitaryRegister> {
         try {
             this.logger.debug(`creating PhytosanitaryRegister with data=`, JSON.stringify(phytosanitaryRegisterData));
-            const { idUser, startDate, endDate, idSection, idPhytosanitaryRegister  } = phytosanitaryRegisterData;
+            const { idUser, startDate, endDate, idSection, idPhytosanitaryRegister, idProduct  } = phytosanitaryRegisterData;
             
             if (!idUser) {
                 throw new HttpException(
@@ -60,6 +62,13 @@ export class PhytosanitaryRegistersService {
             if (!idSection) {
                 throw new HttpException(
                     'Parametro idSeccion es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            if (!idProduct) {
+                throw new HttpException(
+                    'Parametro idProducto es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -97,7 +106,18 @@ export class PhytosanitaryRegistersService {
                 );
             }
 
-            const phytosanitaryRegister = await this.phytosanitaryRegistersRepository.insertPhytosanitaryRegister(phytosanitaryRegisterData, userById, sectionById);
+            const productById = await this.productsRepository.findOne({
+                where: { id: idProduct, deletedAt: null }
+            });
+
+            if (!productById) {
+                throw new HttpException(
+                    `Producto con id ${idProduct} no existe`,
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            const phytosanitaryRegister = await this.phytosanitaryRegistersRepository.insertPhytosanitaryRegister(phytosanitaryRegisterData, userById, sectionById, productById);
 
             return this.phytosanitaryRegistersRepository.getPhytosanitaryRegisterByAttribute('', phytosanitaryRegister) ;
         } catch (error) {

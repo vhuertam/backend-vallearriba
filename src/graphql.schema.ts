@@ -87,6 +87,7 @@ export class InputPhytosanitaryRegister {
     endDate: Date;
     idUser: string;
     idSection: string;
+    idProduct?: string;
 }
 
 export class InputPhytosanitaryRegisterEdit {
@@ -532,6 +533,7 @@ export class PhytosanitaryRegister {
     startDate: Date;
     endDate: Date;
     user: User;
+    product?: Product;
     section: Section;
     createdAt: Date;
     updatedAt: Date;

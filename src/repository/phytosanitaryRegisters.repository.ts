@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
-import { Users, Sections } from 'src/entities';
+import { Users, Sections, Products } from 'src/entities';
 import { PhytosanitaryRegister, InputPhytosanitaryRegister, InputPhytosanitaryRegisterEdit } from 'src/graphql.schema';
 import { Repository, EntityRepository } from 'typeorm';
 import { PhytosanitaryRegisters } from '../entities/phytosanitaryRegisters.entity';
@@ -37,7 +37,7 @@ export class PhytosanitaryRegistersRepository extends Repository<PhytosanitaryRe
         }
     }
 
-    public async insertPhytosanitaryRegister(phytosanitaryRegisterData: InputPhytosanitaryRegister, user: Users, section: Sections): Promise<string> {
+    public async insertPhytosanitaryRegister(phytosanitaryRegisterData: InputPhytosanitaryRegister, user: Users, section: Sections, product: Products): Promise<string> {
         try {
             const { idPhytosanitaryRegister, startDate, endDate } = phytosanitaryRegisterData;
             const phytosanitaryRegister = new PhytosanitaryRegisters();
@@ -46,6 +46,7 @@ export class PhytosanitaryRegistersRepository extends Repository<PhytosanitaryRe
             phytosanitaryRegister.endDate = endDate;
             phytosanitaryRegister.user = user;
             phytosanitaryRegister.section = section;
+            phytosanitaryRegister.product = product;
 
             await phytosanitaryRegister.save();
 
