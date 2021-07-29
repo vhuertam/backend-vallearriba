@@ -35,8 +35,6 @@ CREATE TABLE IF NOT EXISTS species(
     PRIMARY KEY (id)
 );
 
-INSERT INTO species(id_species, name) values ('E1', 'Especie 1');
-INSERT INTO species(id_species, name) values ('E2', 'Especie 2');
 
 --Tabla productos o activos
 CREATE TABLE IF NOT EXISTS products(
@@ -48,8 +46,6 @@ CREATE TABLE IF NOT EXISTS products(
     PRIMARY KEY (id)
 );
 
-INSERT INTO products(id_product, name, days) values ('A', 'Activo A', 30);
-INSERT INTO products(id_product, name, days) values ('B', 'Activo B', 40);
 
 -- Tabla estanques
 CREATE TABLE IF NOT EXISTS storage_ponds(
@@ -62,8 +58,6 @@ CREATE TABLE IF NOT EXISTS storage_ponds(
     PRIMARY KEY (id)
 );
 
-INSERT INTO storage_ponds(id_storage_pond, capacitance) values ('TK1', 4000);
-INSERT INTO storage_ponds(id_storage_pond, capacitance) values ('TK2', 5000);
 
 --Tabla bins
 CREATE TABLE IF NOT EXISTS bins(
@@ -74,8 +68,6 @@ CREATE TABLE IF NOT EXISTS bins(
     PRIMARY KEY (id)
 );
 
-INSERT INTO bins(id_bins, name) values ('1', 'Tabali');
-INSERT INTO bins(id_bins, name) values ('2', 'Los Lirios');
 
 --Tabla predios o fundos
 CREATE TABLE IF NOT EXISTS estates(
@@ -86,8 +78,6 @@ CREATE TABLE IF NOT EXISTS estates(
     PRIMARY KEY (id)
 );
 
-INSERT INTO estates(id_estate, name) values ('TL', 'Tabali');
-INSERT INTO estates(id_estate, name) values ('LL', 'Los Lirios');
 
 --Tabla macrozonas
 CREATE TABLE IF NOT EXISTS macrozones(
@@ -99,9 +89,6 @@ CREATE TABLE IF NOT EXISTS macrozones(
     PRIMARY KEY (id),
     FOREIGN KEY (id_estate) references estates(id)
 );
-
-INSERT INTO macrozones(id_macrozone, name) values ('M1', 'Macrozona 1');
-INSERT INTO macrozones(id_macrozone, name) values ('M2', 'Macrozona 2');
 
 
 --Tabla secciones
@@ -116,9 +103,6 @@ CREATE TABLE IF NOT EXISTS sections(
     FOREIGN KEY (id_macrozone) references macrozones(id)
 );
 
-INSERT INTO sections(id_section, name) values ('S1', 'Seccion 1');
-INSERT INTO sections(id_section, name) values ('S2', 'Seccion 2');
-
 
 --Tabla cuarteles
 CREATE TABLE IF NOT EXISTS quarters(
@@ -132,10 +116,6 @@ CREATE TABLE IF NOT EXISTS quarters(
     FOREIGN KEY (id_section) references sections(id)
 );
 
-INSERT INTO quarters(id_quarter, name) values ('C1', 'Cuartel 1');
-INSERT INTO quarters(id_quarter, name) values ('C2', 'Cuartel 2');
-
-
 --Tabla variedades
 CREATE TABLE IF NOT EXISTS varieties(
     id uuid DEFAULT gen_random_uuid(),
@@ -147,12 +127,7 @@ CREATE TABLE IF NOT EXISTS varieties(
     FOREIGN KEY (id_species) references species(id)
 );
 
-INSERT INTO varieties(id_variety, name) values ('V1', 'Variedad 1');
-INSERT INTO varieties(id_variety, name) values ('V2', 'Variedad 2');
-
-
 --Tabla relacion entre las tablas de variedades y cuarteles
--- PENDIENTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 CREATE TABLE IF NOT EXISTS varieties_quarters(
     id_var uuid,
     id_qua uuid,
@@ -163,10 +138,7 @@ CREATE TABLE IF NOT EXISTS varieties_quarters(
 
 );
 
-INSERT INTO varieties_quarters(id_var, id_qua) values ('V1', 'C1');
-INSERT INTO varieties_quarters(id_var, id_qua) values ('V2', 'C2');
 
--- PENDIENTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
 --Tabla guias pelequen
 CREATE TABLE IF NOT EXISTS pelequen_guides(
@@ -178,9 +150,6 @@ CREATE TABLE IF NOT EXISTS pelequen_guides(
     PRIMARY KEY (id),
     FOREIGN KEY (id_user) references users(id)
 );
-
-INSERT INTO pelequen_guides(id_pelequen_guide, name) values ('PG1', 'documento1');
-INSERT INTO pelequen_guides(id_pelequen_guide, name) values ('PG2', 'documento2');
 
 
 --Tabla limpiezas de estanques
@@ -196,9 +165,6 @@ CREATE TABLE IF NOT EXISTS cleanings_storage_ponds(
     FOREIGN KEY (id_user) references users(id)
 );
 
-INSERT INTO cleanings_storage_ponds(id_cleaning_storage_pond, date) values ('CSP1', '01/01/2020');
-INSERT INTO cleanings_storage_ponds(id_cleaning_storage_pond, date) values ('CSP2', '02/02/2021');
-
 --Tabla limpiezas de linea de proceso
 CREATE TABLE IF NOT EXISTS cleanings_line(
     id uuid DEFAULT gen_random_uuid(),
@@ -210,8 +176,6 @@ CREATE TABLE IF NOT EXISTS cleanings_line(
     FOREIGN KEY (id_user) references users(id)
 );
 
-INSERT INTO cleanings_line(id_cleaning_line, date) values ('CL1', '05/05/2020');
-INSERT INTO cleanings_line(id_cleaning_line, date) values ('CL2', '06/06/2021');
 
 --Tabla lotes de transporte
 CREATE TABLE IF NOT EXISTS transport_batchs(
@@ -227,9 +191,6 @@ CREATE TABLE IF NOT EXISTS transport_batchs(
     FOREIGN KEY (id_pelequen_guide) references pelequen_guides(id),
     FOREIGN KEY (id_user) references users(id)
 );
-
-INSERT INTO transport_batchs(id_transport_batch, date) values ('TB1', '01/01/2021');
-INSERT INTO transport_batchs(id_transport_batch, date) values ('TB2', '02/02/2022');
 
 --Tabla lotes de guarda
 CREATE TABLE IF NOT EXISTS save_batchs(
@@ -249,8 +210,6 @@ CREATE TABLE IF NOT EXISTS save_batchs(
     FOREIGN KEY (id_transport_batch) references transport_batchs(id)
 );
 
-INSERT INTO save_batchs(id_save_batch, date) values ('V1', 'C1');
-
 --Tabla lotes de proceso
 CREATE TABLE IF NOT EXISTS process_batchs(
     id uuid DEFAULT gen_random_uuid(),
@@ -266,8 +225,6 @@ CREATE TABLE IF NOT EXISTS process_batchs(
     FOREIGN KEY (id_save_batch) references save_batchs(id)
 );
 
-INSERT INTO process_batchs(id_process_batch, date) values ('PB1', '03/03/3030');
-
 --Tabla registros fitosanitarios
 CREATE TABLE IF NOT EXISTS phytosanitary_registers(
     id uuid DEFAULT gen_random_uuid(),
@@ -276,22 +233,12 @@ CREATE TABLE IF NOT EXISTS phytosanitary_registers(
     end_date date,
     id_user uuid,
     id_section uuid,
+    id_product uuid,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_user) references users(id),
-    FOREIGN KEY (id_section) references sections(id)
-);
-
-INSERT INTO phytosanitary_registers(id_phytosanitary_register, start_date, end_date) values ('', 'C1');
-
---Tabla relacion entre tablas de registros fitosanitarios y productos o activos
-CREATE TABLE IF NOT EXISTS phytosanitary_registers_products(
-    id_phy uuid,
-    id_pro uuid,
-
-    PRIMARY KEY (id_phy, id_pro),
-    FOREIGN KEY (id_phy) references phytosanitary_registers(id),
-    FOREIGN KEY (id_pro) references products(id)
+    FOREIGN KEY (id_section) references sections(id),
+    FOREIGN KEY (id_product) references products(id)
 );
 
 --Tabla tarjas
@@ -305,6 +252,7 @@ CREATE TABLE IF NOT EXISTS cards(
     gross_weight float,
     contractor text,
     condition text,
+    estimated_weight
     correlative SERIAL,
     id_bins uuid,
     id_process_batch uuid,
