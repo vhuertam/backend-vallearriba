@@ -242,7 +242,7 @@ CREATE TABLE IF NOT EXISTS phytosanitary_registers(
     FOREIGN KEY (id_product) references products(id)
 );
 
-CREATE TABLE IF NOT EXISTS varieties_quarters(
+CREATE TABLE IF NOT EXISTS phytosanitary_registers_products(
     id_phy uuid,
     id_pro uuid,
 
