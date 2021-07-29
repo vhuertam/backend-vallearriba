@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from 'typeorm';
+import { PhytosanitaryRegisters } from './phytosanitaryRegisters.entity';
 
 @Entity()
 export class Products extends BaseEntity {
@@ -13,6 +14,9 @@ export class Products extends BaseEntity {
 
     @Column({ name: 'days', type: 'int', nullable: true })
     days: number
+
+    @OneToMany(() => PhytosanitaryRegisters, (phytosanitaryRegister) => phytosanitaryRegister.product)
+    phytosanitaryRegister: PhytosanitaryRegisters[]
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: 'NOW' })
     createdAt: Date

@@ -13,6 +13,7 @@ import {
 import { PhytosanitaryRegistersProducts } from './phytosanitaryRegistersProducts.entity';
 import { Users } from './users.entity';
 import { Sections } from './sections.entity';
+import { Products } from './products.entity';
 
 @Entity()
 export class PhytosanitaryRegisters extends BaseEntity {
@@ -38,8 +39,11 @@ export class PhytosanitaryRegisters extends BaseEntity {
     @ManyToOne(() => Sections)
     section: Sections;
 
-    @OneToMany(() => PhytosanitaryRegistersProducts, (phytosanitaryRegisterProduct) => phytosanitaryRegisterProduct.phytosanitaryRegister)
-    phytosanitaryRegisterProduct: PhytosanitaryRegistersProducts[]
+    @Column({ name: 'id_product', type: 'uuid' })
+    @JoinColumn({ name: 'id_product' })
+    @ManyToOne(() => Products)
+    product: Products;
+
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: 'NOW' })
     createdAt: Date;
