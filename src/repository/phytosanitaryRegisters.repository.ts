@@ -10,7 +10,7 @@ export class PhytosanitaryRegistersRepository extends Repository<PhytosanitaryRe
     public async getPhytosanitaryRegisters(): Promise<PhytosanitaryRegisters[]> {
         try {
             return this.find({
-                relations: ['user', 'section', 'section.macrozone', 'section.macrozone.estate'],
+                relations: ['user', 'section', 'section.macrozone', 'section.macrozone.estate', 'product'],
                 where: { deletedAt: null }
             });
         } catch (error) {
