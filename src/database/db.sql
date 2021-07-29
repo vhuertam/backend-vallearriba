@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS sections(
     id uuid DEFAULT gen_random_uuid(),
     id_section text,
     name TEXT,
-    estimated_harvest_kg float,
+    estimated_harvest_kg int,
     id_macrozone uuid,
 
     PRIMARY KEY (id),
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS quarters(
     id uuid DEFAULT gen_random_uuid(),
     id_quarter text,
     name TEXT,
-    estimated_harvest_kg float,
+    estimated_harvest_kg int,
     id_section uuid,
 
     PRIMARY KEY (id),
@@ -240,6 +240,16 @@ CREATE TABLE IF NOT EXISTS phytosanitary_registers(
     FOREIGN KEY (id_user) references users(id),
     FOREIGN KEY (id_section) references sections(id),
     FOREIGN KEY (id_product) references products(id)
+);
+
+CREATE TABLE IF NOT EXISTS varieties_quarters(
+    id_phy uuid,
+    id_pro uuid,
+
+    PRIMARY KEY (id_phy, id_pro),
+    FOREIGN KEY (id_phy) references phytosanitary_registers(id),
+    FOREIGN KEY (id_pro) references products(id)
+
 );
 
 --Tabla tarjas
