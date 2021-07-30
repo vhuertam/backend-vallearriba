@@ -26,7 +26,7 @@ export class PelequenGuidesService {
     async createPelequenGuide(pelequenGuideData: InputPelequenGuide): Promise<PelequenGuide> {
         try {
             this.logger.debug(`creating PelequenGuide with data=`, JSON.stringify(pelequenGuideData));
-            const { idUser, document, idPelequenGuide } = pelequenGuideData;
+            const { idUser, document, idPelequenGuide, name } = pelequenGuideData;
             
             if (!idUser) {
                 throw new HttpException(
@@ -45,6 +45,13 @@ export class PelequenGuidesService {
             if (!idPelequenGuide) {
                 throw new HttpException(
                     'Parametro idGuiaPelequen es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            if (!name) {
+                throw new HttpException(
+                    'Parametro nombre es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -96,7 +103,7 @@ export class PelequenGuidesService {
     async editPelequenGuide(id: string, pelequenGuideData: InputPelequenGuideEdit): Promise<PelequenGuide> {
         try {
             this.logger.debug(`updating PelequenGuide`);
-            const { idPelequenGuide, document } = pelequenGuideData;
+            const { idPelequenGuide, document, name } = pelequenGuideData;
 
             if (!id) {
                 throw new HttpException(
@@ -119,6 +126,13 @@ export class PelequenGuidesService {
                 );
             }
 
+            if (!name) {
+                throw new HttpException(
+                    'Parametro nombre es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
             const pelequenGuideById = await this.pelequenGuidesRepository.getPelequenGuideByAttribute('', id);
 
             if (!pelequenGuideById) {
@@ -131,11 +145,13 @@ export class PelequenGuidesService {
             const pelequenGuideByIdPelequenGuide = await this.pelequenGuidesRepository.getPelequenGuideByAttribute(idPelequenGuide);
 
             if (!pelequenGuideByIdPelequenGuide) {
-                return await this.pelequenGuidesRepository.editPelequenGuide(id, pelequenGuideData);
+                const pelequenguideEdit = await this.pelequenGuidesRepository.editPelequenGuide(id, pelequenGuideData);
+                return await this.pelequenGuidesRepository.getPelequenGuideByAttribute('', pelequenguideEdit);
             }
 
             if(pelequenGuideByIdPelequenGuide.id === pelequenGuideById.id) {
-                return await this.pelequenGuidesRepository.editPelequenGuide(id, pelequenGuideData);
+                const pelequenguideEdit = await this.pelequenGuidesRepository.editPelequenGuide(id, pelequenGuideData);
+                return await this.pelequenGuidesRepository.getPelequenGuideByAttribute('', pelequenguideEdit);
             }
 
             if (pelequenGuideByIdPelequenGuide) {

@@ -74,12 +74,14 @@ export class InputMacrozoneEdit {
 export class InputPelequenGuide {
     idPelequenGuide: string;
     document: string;
+    name?: string;
     idUser: string;
 }
 
 export class InputPelequenGuideEdit {
     idPelequenGuide: string;
     document: string;
+    name?: string;
 }
 
 export class InputPhytosanitaryRegister {
@@ -528,6 +530,7 @@ export class PelequenGuide {
     id: string;
     idPelequenGuide: string;
     document: string;
+    name?: string;
     user: User;
     createdAt: Date;
     updatedAt: Date;

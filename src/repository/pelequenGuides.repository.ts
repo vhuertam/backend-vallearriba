@@ -39,10 +39,11 @@ export class PelequenGuidesRepository extends Repository<PelequenGuides> {
 
     public async insertPelequenGuide(pelequenGuideData: InputPelequenGuide, user: Users): Promise<string> {
         try {
-            const { idPelequenGuide, document } = pelequenGuideData;
+            const { idPelequenGuide, document, name } = pelequenGuideData;
             const pelequenGuide = new PelequenGuides();
             pelequenGuide.idPelequenGuide = idPelequenGuide;
             pelequenGuide.document = document;
+            pelequenGuide.name = name;
             pelequenGuide.user = user;
 
             await pelequenGuide.save();
@@ -65,21 +66,22 @@ export class PelequenGuidesRepository extends Repository<PelequenGuides> {
         return pelequenGuide;
     }
 
-    public async editPelequenGuide(id: string, pelequenGuideData: InputPelequenGuideEdit): Promise<PelequenGuides> {
+    public async editPelequenGuide(id: string, pelequenGuideData: InputPelequenGuideEdit): Promise<string> {
         const pelequenGuide = await this.findOne(id);
 
         if (!pelequenGuide) {
             throw new HttpException(`Guia Pelequen con id=${id} no existe`, HttpStatus.BAD_REQUEST);
         }
 
-        const { idPelequenGuide, document } = pelequenGuideData;
+        const { idPelequenGuide, document, name } = pelequenGuideData;
 
         pelequenGuide.idPelequenGuide = idPelequenGuide;
         pelequenGuide.document = document;
+        pelequenGuide.name = name;
  
         await this.save(pelequenGuide);
 
-        return pelequenGuide;
+        return pelequenGuide.id;
 
     }
 }

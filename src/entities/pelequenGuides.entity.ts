@@ -24,6 +24,9 @@ export class PelequenGuides extends BaseEntity {
     @Column({ name: 'document', type: 'text', nullable: true })
     document: string;
 
+    @Column({ name: 'name', type: 'text', nullable: true })
+    name: string;
+
     @Column({ name: 'id_user', type: 'uuid' })
     @JoinColumn({ name: 'id_user' })
     @ManyToOne(() => Users)

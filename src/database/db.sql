@@ -145,6 +145,7 @@ CREATE TABLE IF NOT EXISTS pelequen_guides(
     id uuid DEFAULT gen_random_uuid(),
     id_pelequen_guide text,
     document text,
+    name text,
     id_user uuid,
 
     PRIMARY KEY (id),

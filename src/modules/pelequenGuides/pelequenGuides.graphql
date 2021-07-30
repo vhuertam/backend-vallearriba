@@ -12,6 +12,7 @@ type PelequenGuide {
     id:ID!
     idPelequenGuide: String!
     document: String!
+    name: String
     user: User!
     createdAt: Date!
     updatedAt: Date!
@@ -21,10 +22,12 @@ type PelequenGuide {
 input InputPelequenGuide {
     idPelequenGuide: String!
     document: String!
+    name: String
     idUser: String!
 }
 
 input InputPelequenGuideEdit {
     idPelequenGuide: String!
     document: String!
+    name: String
 }
