@@ -36,7 +36,7 @@ export class ProcessBatchsResolver {
     }    
     @UseGuards(JwtAuthGuard)
     @Mutation('toAssignLitersToProcessBatch')
-    async toAssignLitersToProcessBatch(@Args('id') id: string, @Args('residualWeight') generatedLiters: number): Promise<ProcessBatch> {
+    async toAssignLitersToProcessBatch(@Args('id') id: string, @Args('generatedLiters') generatedLiters: number): Promise<ProcessBatch> {
         return await this.processBatchsService.toAssignLitersToProcessBatch(id, generatedLiters);
     }    
 }
