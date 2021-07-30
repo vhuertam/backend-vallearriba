@@ -143,7 +143,7 @@ export class PhytosanitaryRegistersService {
     async editPhytosanitaryRegister(id: string, phytosanitaryRegisterData: InputPhytosanitaryRegisterEdit): Promise<PhytosanitaryRegister> {
         try {
             this.logger.debug(`updating PhytosanitaryRegister`);
-            const { idPhytosanitaryRegister, startDate, endDate } = phytosanitaryRegisterData;
+            const { idPhytosanitaryRegister, startDate, endDate, idProduct, idSection } = phytosanitaryRegisterData;
 
             if (!id) {
                 throw new HttpException(
@@ -155,6 +155,20 @@ export class PhytosanitaryRegistersService {
             if (!idPhytosanitaryRegister) {
                 throw new HttpException(
                     'Parametro idRegistroFitosanitario es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            if (!idSection) {
+                throw new HttpException(
+                    'Parametro idSeccion es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            if (!idProduct) {
+                throw new HttpException(
+                    'Parametro idProducto es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -173,6 +187,28 @@ export class PhytosanitaryRegistersService {
                 );
             }
 
+            const sectionById = await this.sectionsRepository.findOne({
+                where: { id: idSection, deletedAt: null }
+            });
+
+            if (!sectionById) {
+                throw new HttpException(
+                    `Seccion con id ${idSection} no existe`,
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            const productById = await this.productsRepository.findOne({
+                where: { id: idProduct, deletedAt: null }
+            });
+
+            if (!productById) {
+                throw new HttpException(
+                    `Producto con id ${idProduct} no existe`,
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
             const phytosanitaryRegisterById = await this.phytosanitaryRegistersRepository.getPhytosanitaryRegisterByAttribute('', id);
 
             if (!phytosanitaryRegisterById) {
@@ -185,11 +221,13 @@ export class PhytosanitaryRegistersService {
             const phytosanitaryRegisterByIdphytosanitaryRegister = await this.phytosanitaryRegistersRepository.getPhytosanitaryRegisterByAttribute(idPhytosanitaryRegister);
 
             if (!phytosanitaryRegisterByIdphytosanitaryRegister) {
-                return await this.phytosanitaryRegistersRepository.editPhytosanitaryRegister(id, phytosanitaryRegisterData);
+                const phytoregEdit = await this.phytosanitaryRegistersRepository.editPhytosanitaryRegister(id, phytosanitaryRegisterData, sectionById, productById);
+                return await this.phytosanitaryRegistersRepository.getPhytosanitaryRegisterByAttribute('', phytoregEdit);
             }
 
             if(phytosanitaryRegisterByIdphytosanitaryRegister.id === phytosanitaryRegisterById.id) {
-                return await this.phytosanitaryRegistersRepository.editPhytosanitaryRegister(id, phytosanitaryRegisterData);
+                const phytoregEdit = await this.phytosanitaryRegistersRepository.editPhytosanitaryRegister(id, phytosanitaryRegisterData, sectionById, productById);
+                return await this.phytosanitaryRegistersRepository.getPhytosanitaryRegisterByAttribute('', phytoregEdit);
             }
 
             if (phytosanitaryRegisterByIdphytosanitaryRegister) {

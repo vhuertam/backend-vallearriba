@@ -95,6 +95,8 @@ export class InputPhytosanitaryRegisterEdit {
     idPhytosanitaryRegister: string;
     startDate: Date;
     endDate: Date;
+    idSection?: string;
+    idProduct?: string;
 }
 
 export class InputPhytosanitaryRegisterProduct {

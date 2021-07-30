@@ -68,7 +68,7 @@ export class PhytosanitaryRegistersRepository extends Repository<PhytosanitaryRe
         return phytosanitaryRegister;
     }
 
-    public async editPhytosanitaryRegister(id: string, phytosanitaryRegisterData: InputPhytosanitaryRegisterEdit): Promise<PhytosanitaryRegisters> {
+    public async editPhytosanitaryRegister(id: string, phytosanitaryRegisterData: InputPhytosanitaryRegisterEdit, section: Sections, product: Products): Promise<string> {
         const phytosanitaryRegister = await this.findOne(id);
 
         if (!phytosanitaryRegister) {
@@ -80,10 +80,12 @@ export class PhytosanitaryRegistersRepository extends Repository<PhytosanitaryRe
         phytosanitaryRegister.idPhytosanitaryRegister = idPhytosanitaryRegister;
         phytosanitaryRegister.startDate = startDate;
         phytosanitaryRegister.endDate = endDate;
+        phytosanitaryRegister.section = section;
+        phytosanitaryRegister.product = product;
  
         await this.save(phytosanitaryRegister);
 
-        return phytosanitaryRegister;
+        return phytosanitaryRegister.id;
 
     }
 }
