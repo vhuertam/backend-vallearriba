@@ -202,7 +202,7 @@ export class MacrozonesService {
 
             if (macrozoneByIdmacrozone) {
                 throw new HttpException(
-                    `macrozone con id=${idMacrozone} existe`,
+                    `Macrozona con id=${idMacrozone} existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }
