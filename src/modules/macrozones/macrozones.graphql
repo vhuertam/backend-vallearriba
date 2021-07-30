@@ -28,4 +28,5 @@ input InputMacrozone {
 input InputMacrozoneEdit {
     idMacrozone: String!
     name: String!
+    idEstate: String
 }

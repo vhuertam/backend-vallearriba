@@ -2,7 +2,7 @@
 CREATE TABLE if not EXISTS roles(
     id uuid DEFAULT gen_random_uuid(),
     id_role text,
-    nombre text,
+    name text,
     
     PRIMARY KEY (id)
 
@@ -217,6 +217,7 @@ CREATE TABLE IF NOT EXISTS process_batchs(
     date date,
     condition text,
     residual_weight int,
+    liters int,
     correlative SERIAL,
     id_user uuid,
     id_save_batch uuid,

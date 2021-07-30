@@ -100,7 +100,7 @@ export class MacrozonesRepository extends Repository<Macrozones> {
         }
     }
 
-    public async editMacrozone(id: string, macrozoneData: InputMacrozoneEdit): Promise<string> {
+    public async editMacrozone(id: string, macrozoneData: InputMacrozoneEdit, estate: Estates): Promise<string> {
         const macrozone = await this.findOne(id);
 
         if (!macrozone) {
@@ -111,6 +111,7 @@ export class MacrozonesRepository extends Repository<Macrozones> {
 
         macrozone.idMacrozone = idMacrozone;
         macrozone.name = name;
+        macrozone.estate = estate;
  
         await this.save(macrozone);
 

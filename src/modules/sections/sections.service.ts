@@ -46,7 +46,7 @@ export class SectionsService {
 
             if (!estimatedHarvestKg) {
                 throw new HttpException(
-                    'Parametro nombre es indefinido',
+                    'Parametro cosecha estimada kg es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -59,7 +59,7 @@ export class SectionsService {
             }
 
             const sectionById = await this.sectionsRepository.findOne({
-                where: { idSection: idSection}
+                where: { idSection: idSection, deletedAt: null }
             });
             
             if (sectionById) {
@@ -70,12 +70,12 @@ export class SectionsService {
             }
 
             const macrozoneById = await this.macrozonesRepository.findOne({
-                where: { id: idMacrozone }
+                where: { id: idMacrozone, deletedAt: null }
             });
 
             if (!macrozoneById) {
                 throw new HttpException(
-                    `Section con id ${idMacrozone} no existe`,
+                    `Macrozona con id ${idMacrozone} no existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -128,7 +128,7 @@ export class SectionsService {
     async editSection(id: string, sectionData: InputSectionEdit): Promise<Section> {
         try {
             this.logger.debug(`updating Section`);
-            const { idSection, name, estimatedHarvestKg } = sectionData;
+            const { idSection, name, estimatedHarvestKg, idMacrozone } = sectionData;
 
             if (!id) {
                 throw new HttpException(
@@ -144,6 +144,13 @@ export class SectionsService {
                 );
             }
 
+            if (!idMacrozone) {
+                throw new HttpException(
+                    'Parametro idMacrozona es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
             if (!name) {
                 throw new HttpException(
                     'Parametro nombre es indefinido',
@@ -153,7 +160,18 @@ export class SectionsService {
 
             if (!estimatedHarvestKg) {
                 throw new HttpException(
-                    'Parametro nombre es indefinido',
+                    'Parametro cosecha estimada kg es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            const macrozoneById = await this.macrozonesRepository.findOne({
+                where: { id: idMacrozone, deletedAt: null }
+            });
+
+            if (!macrozoneById) {
+                throw new HttpException(
+                    `Macrozona con id ${idMacrozone} no existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -162,7 +180,7 @@ export class SectionsService {
 
             if (!sectionById) {
                 throw new HttpException(
-                    `Cuartel con id ${idSection} no existe`,
+                    `Seccion con id ${idSection} no existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -170,20 +188,20 @@ export class SectionsService {
             const sectionByIdsection = await this.sectionsRepository.getSectionByAttribute(idSection);
 
             if (!sectionByIdsection) {
-                const sectionEdit = await this.sectionsRepository.editSection(id, sectionData);
+                const sectionEdit = await this.sectionsRepository.editSection(id, sectionData, macrozoneById);
                 const sectionSucces = await this.sectionsRepository.getSectionByAttribute('', '', sectionEdit);
                 return sectionSucces;
             }
 
             if(sectionByIdsection.id === sectionById.id) {
-                const sectionEdit = await this.sectionsRepository.editSection(id, sectionData);
+                const sectionEdit = await this.sectionsRepository.editSection(id, sectionData, macrozoneById);
                 const sectionSucces = await this.sectionsRepository.getSectionByAttribute('', '', sectionEdit);
                 return sectionSucces;
             }
 
             if (sectionByIdsection) {
                 throw new HttpException(
-                    `section con id=${idSection} existe`,
+                    `Seccion con id=${idSection} existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }

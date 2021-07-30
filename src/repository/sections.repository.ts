@@ -75,7 +75,7 @@ export class SectionsRepository extends Repository<Sections> {
         return section;
     }
 
-    public async editSection(id: string, sectionData: InputSectionEdit): Promise<string> {
+    public async editSection(id: string, sectionData: InputSectionEdit, macrozone: Macrozones): Promise<string> {
         const section = await this.findOne(id);
 
         if (!section) {
@@ -87,6 +87,7 @@ export class SectionsRepository extends Repository<Sections> {
         section.idSection = idSection;
         section.name = name;
         section.estimatedHarvestKg = estimatedHarvestKg;
+        section.macrozone = macrozone;
  
         await this.save(section);
 

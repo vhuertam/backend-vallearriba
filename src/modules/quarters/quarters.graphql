@@ -30,4 +30,5 @@ input InputQuarterEdit {
     idQuarter: String!
     name: String!
     estimatedHarvestKg: Int
+    idSection: String
 }

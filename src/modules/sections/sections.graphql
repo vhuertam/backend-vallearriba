@@ -31,4 +31,5 @@ input InputSectionEdit {
     idSection: String!
     name: String!
     estimatedHarvestKg: Int
+    idMacrozone: String
 }

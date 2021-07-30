@@ -136,7 +136,7 @@ export class MacrozonesService {
     async editMacrozone(id: string, macrozoneData: InputMacrozoneEdit): Promise<Macrozone> {
         try {
             this.logger.debug(`updating macrozone`);
-            const { idMacrozone, name } = macrozoneData;
+            const { idMacrozone, name, idEstate } = macrozoneData;
 
             if (!id) {
                 throw new HttpException(
@@ -147,7 +147,14 @@ export class MacrozonesService {
 
             if (!idMacrozone) {
                 throw new HttpException(
-                    'Parametro idMacrozone es indefinido',
+                    'Parametro idMacrozona es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            if (!idEstate) {
+                throw new HttpException(
+                    'Parametro idFundo es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -163,7 +170,18 @@ export class MacrozonesService {
 
             if (!macrozoneById) {
                 throw new HttpException(
-                    `macrozone con id ${idMacrozone} no existe`,
+                    `Macrozona con id ${idMacrozone} no existe`,
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            const estateById = await this.estatesRepository.findOne({
+                where: { id: idEstate, deletedAt: null }
+            });
+
+            if (!estateById) {
+                throw new HttpException(
+                    `Fundo con id ${idEstate} no existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -171,13 +189,13 @@ export class MacrozonesService {
             const macrozoneByIdmacrozone = await this.macrozonesRepository.getMacrozoneByAttribute(idMacrozone);
 
             if (!macrozoneByIdmacrozone) {
-                const macrozoneEdit = await this.macrozonesRepository.editMacrozone(id, macrozoneData);
+                const macrozoneEdit = await this.macrozonesRepository.editMacrozone(id, macrozoneData, estateById);
                 const macrozoneSucces = await this.macrozonesRepository.getMacrozoneByAttribute('', '', macrozoneEdit);
                 return macrozoneSucces;
             }
 
             if(macrozoneByIdmacrozone.id === macrozoneById.id) {
-                const macrozoneEdit = await this.macrozonesRepository.editMacrozone(id, macrozoneData);
+                const macrozoneEdit = await this.macrozonesRepository.editMacrozone(id, macrozoneData, estateById);
                 const macrozoneSucces = await this.macrozonesRepository.getMacrozoneByAttribute('', '', macrozoneEdit);
                 return macrozoneSucces;
             }

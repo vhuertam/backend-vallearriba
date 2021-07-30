@@ -43,7 +43,7 @@ export class QuartersService {
 
             if (!estimatedHarvestKg) {
                 throw new HttpException(
-                    'Parametro nombre es indefinido',
+                    'Parametro cosecha estimada kg es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -103,7 +103,7 @@ export class QuartersService {
     async editQuarter(id: string, quarterData: InputQuarterEdit): Promise<Quarter> {
         try {
             this.logger.debug(`updating quarter`);
-            const { idQuarter, name, estimatedHarvestKg } = quarterData;
+            const { idQuarter, name, estimatedHarvestKg, idSection } = quarterData;
 
             if (!id) {
                 throw new HttpException(
@@ -128,7 +128,25 @@ export class QuartersService {
 
             if (!estimatedHarvestKg) {
                 throw new HttpException(
-                    'Parametro nombre es indefinido',
+                    'Parametro cosecha estimada kg es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            if (!idSection) {
+                throw new HttpException(
+                    'Parametro idSeccion es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            const sectionById = await this.sectionsRepository.findOne({
+                where: { id: idSection, deletedAt: null }
+            });
+
+            if (!sectionById) {
+                throw new HttpException(
+                    `Seccion con id ${idSection} no existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -145,20 +163,20 @@ export class QuartersService {
             const quarterByIdquarter = await this.quartersRepository.getQuarterByAttribute(idQuarter);
 
             if (!quarterByIdquarter) {
-                const quarterEdit = await this.quartersRepository.editQuarter(id, quarterData);
+                const quarterEdit = await this.quartersRepository.editQuarter(id, quarterData, sectionById);
                 const quarterSucces = await this.quartersRepository.getQuarterByAttribute('', '', quarterEdit);
                 return quarterSucces;
             }
 
             if(quarterByIdquarter.id === quarterById.id) {
-                const quarterEdit = await this.quartersRepository.editQuarter(id, quarterData);
+                const quarterEdit = await this.quartersRepository.editQuarter(id, quarterData, sectionById);
                 const quarterSucces = await this.quartersRepository.getQuarterByAttribute('', '', quarterEdit);
                 return quarterSucces;
             }
 
             if (quarterByIdquarter) {
                 throw new HttpException(
-                    `quarter con id=${idQuarter} existe`,
+                    `Cuartel con id=${idQuarter} existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }

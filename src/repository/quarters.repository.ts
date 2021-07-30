@@ -75,7 +75,7 @@ export class QuartersRepository extends Repository<Quarters> {
         return quarter;
     }
 
-    public async editQuarter(id: string, quarterData: InputQuarterEdit): Promise<string> {
+    public async editQuarter(id: string, quarterData: InputQuarterEdit, section: Sections): Promise<string> {
         const quarter = await this.findOne(id);
 
         if (!quarter) {
@@ -87,6 +87,7 @@ export class QuartersRepository extends Repository<Quarters> {
         quarter.idQuarter = idQuarter;
         quarter.name = name;
         quarter.estimatedHarvestKg = estimatedHarvestKg;
+        quarter.section = section;
  
         await this.save(quarter);
 

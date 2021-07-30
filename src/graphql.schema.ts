@@ -68,6 +68,7 @@ export class InputMacrozone {
 export class InputMacrozoneEdit {
     idMacrozone: string;
     name: string;
+    idEstate?: string;
 }
 
 export class InputPelequenGuide {
@@ -134,6 +135,7 @@ export class InputQuarterEdit {
     idQuarter: string;
     name: string;
     estimatedHarvestKg?: number;
+    idSection?: string;
 }
 
 export class RoleData {
@@ -169,6 +171,7 @@ export class InputSectionEdit {
     idSection: string;
     name: string;
     estimatedHarvestKg?: number;
+    idMacrozone?: string;
 }
 
 export class SpecieData {
