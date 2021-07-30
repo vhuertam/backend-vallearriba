@@ -31,7 +31,12 @@ export class ProcessBatchsResolver {
     }
     @UseGuards(JwtAuthGuard)
     @Mutation('toAssignWeigthToProcessBatch')
-    async toAssignWeigthToProcessBatch(@Args('id') id: string, @Args('user') user: string, @Args('residualWeight') residualWeight: number): Promise<ProcessBatch> {
-        return await this.processBatchsService.toAssignWeigthToProcessBatch(id, user, residualWeight);
+    async toAssignWeigthToProcessBatch(@Args('id') id: string, @Args('residualWeight') residualWeight: number): Promise<ProcessBatch> {
+        return await this.processBatchsService.toAssignWeigthToProcessBatch(id, residualWeight);
+    }    
+    @UseGuards(JwtAuthGuard)
+    @Mutation('toAssignLitersToProcessBatch')
+    async toAssignLitersToProcessBatch(@Args('id') id: string, @Args('residualWeight') generatedLiters: number): Promise<ProcessBatch> {
+        return await this.processBatchsService.toAssignLitersToProcessBatch(id, generatedLiters);
     }    
 }

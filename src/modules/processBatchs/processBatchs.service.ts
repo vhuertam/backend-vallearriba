@@ -166,19 +166,12 @@ export class ProcessBatchsService {
         }
     }
 
-    async toAssignWeigthToProcessBatch(id: string, user: string, residualWeight: number): Promise<ProcessBatch> {
+    async toAssignWeigthToProcessBatch(id: string, residualWeight: number): Promise<ProcessBatch> {
         try {
             this.logger.debug(`assign Weight with value=${residualWeight} to card with id=${id}`);
             if (!id) {
                 throw new HttpException(
                     'Parametro id es indefinido',
-                    HttpStatus.BAD_REQUEST,
-                );
-            }
-
-            if (!user) {
-                throw new HttpException(
-                    'Parametro idUsuario es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -201,18 +194,42 @@ export class ProcessBatchsService {
                 );
             }
 
-            const userById = await this.usersRepository.findOne({
-                where: { id: user, deletedAt: null },
-            });
+            return await this.processBatchsRepository.assignWeigthToProcessBatch(processBatchById, residualWeight);
 
-            if (!userById) {
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async toAssignLitersToProcessBatch(id: string, generatedLiters: number): Promise<ProcessBatch> {
+        try {
+            this.logger.debug(`assign Liters with value=${generatedLiters} to card with id=${id}`);
+            if (!id) {
                 throw new HttpException(
-                    `Usuario que registra peso con id ${user} no existe`,
+                    'Parametro id es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
 
-            return await this.processBatchsRepository.assignWeigthToProcessBatch(processBatchById, userById, residualWeight);
+            if (!generatedLiters) {
+                throw new HttpException(
+                    'Parametro Litros generados es indefinido',
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            const processBatchById = await this.processBatchsRepository.findOne({
+                where: { id: id, deletedAt: null },
+            });
+
+            if (!processBatchById) {
+                throw new HttpException(
+                    `Lote de proceso con id ${id} no existe`,
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+
+            return await this.processBatchsRepository.assignLitersToProcessBatch(processBatchById, generatedLiters);
 
         } catch (error) {
             throw error;

@@ -31,6 +31,9 @@ export class ProcessBatchs extends BaseEntity {
     @Column({ name: 'residual_weight', type: 'int', nullable: true })
     residualWeight: number;
 
+    @Column({ name: 'generated_liters', type: 'int', nullable: true })
+    generatedLiters: number;
+
     @Column({ name: 'correlative', type: 'int', nullable: true, generated:'increment' })
     correlative: number;
 

@@ -122,9 +122,16 @@ export class ProcessBatchsRepository extends Repository<ProcessBatchs> {
         return proccessBatch.id;
     }
 
-    public async assignWeigthToProcessBatch(processBatch: ProcessBatchs, user: Users, residualWeight: number): Promise<ProcessBatchs> {
-        processBatch.user = user;
+    public async assignWeigthToProcessBatch(processBatch: ProcessBatchs, residualWeight: number): Promise<ProcessBatchs> {
         processBatch.residualWeight = residualWeight;
+
+        await this.save(processBatch);
+
+        return processBatch;
+    }
+
+    public async assignLitersToProcessBatch(processBatch: ProcessBatchs, generatedLiters: number): Promise<ProcessBatchs> {
+        processBatch.generatedLiters = generatedLiters;
 
         await this.save(processBatch);
 

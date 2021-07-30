@@ -313,7 +313,9 @@ export abstract class IMutation {
 
     abstract deleteProcessBatch(id?: string): ProcessBatch | Promise<ProcessBatch>;
 
-    abstract toAssignWeigthToProcessBatch(id?: string, user?: string, residualWeight?: number): ProcessBatch | Promise<ProcessBatch>;
+    abstract toAssignWeigthToProcessBatch(id?: string, residualWeight?: number): ProcessBatch | Promise<ProcessBatch>;
+
+    abstract toAssignLitersToProcessBatch(id?: string, generatedLiters?: number): ProcessBatch | Promise<ProcessBatch>;
 
     abstract createProduct(input?: ProductData): Product | Promise<Product>;
 
@@ -557,6 +559,7 @@ export class ProcessBatch {
     date: Date;
     condition?: string;
     residualWeight?: number;
+    generatedLiters?: number;
     user: User;
     saveBatch?: SaveBatch;
     createdAt: Date;

@@ -6,7 +6,8 @@ type Mutation {
     createProcessBatch(input: InputProcessBatch): ProcessBatch
     editProcessBatch(id: ID, input: InputProcessBatchEdit): ProcessBatch
     deleteProcessBatch(id: ID): ProcessBatch
-    toAssignWeigthToProcessBatch(id: ID, user: ID, residualWeight: Int): ProcessBatch
+    toAssignWeigthToProcessBatch(id: ID, residualWeight: Int): ProcessBatch
+    toAssignLitersToProcessBatch(id: ID, generatedLiters: Int): ProcessBatch
 }
 
 type ProcessBatch {
@@ -15,6 +16,7 @@ type ProcessBatch {
     date: Date!
     condition: String
     residualWeight: Int
+    generatedLiters: Int
     user: User!
     saveBatch: SaveBatch
     createdAt: Date!
