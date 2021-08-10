@@ -2,6 +2,7 @@ import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QuartersRepository } from '../../repository/quarters.repository';
 import { SectionsRepository } from '../../repository/sections.repository';
+import { VarietiesQuartersRepository } from '../../repository/varietiesQuarters.repository';
 import { InputQuarter, Quarter, InputQuarterEdit } from '../../graphql.schema';
 
 @Injectable()
@@ -11,6 +12,7 @@ export class QuartersService {
     constructor(
         @InjectRepository(SectionsRepository) private sectionsRepository: SectionsRepository,
         @InjectRepository(QuartersRepository) private quartersRepository: QuartersRepository,
+        @InjectRepository(VarietiesQuartersRepository) private varietiesQuartersRepository: VarietiesQuartersRepository,
     ) { }
 
     async getQuarters(): Promise<Quarter[]> {
@@ -91,6 +93,8 @@ export class QuartersService {
             if (!id) {
                 throw new HttpException('Parametro id es indefinido', HttpStatus.BAD_REQUEST);
             }
+
+            await this.varietiesQuartersRepository.deleteVarietyQuarterById('', id);
 
             const quarter = await this.quartersRepository.deleteQuarter(id);
 

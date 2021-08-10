@@ -28,7 +28,7 @@ export class SectionsService {
         try {
             this.logger.debug(`creating Section with data=`, JSON.stringify(sectionData));
             const { idMacrozone, name, idSection, estimatedHarvestKg } = sectionData;
-            
+
             if (!idMacrozone) {
                 throw new HttpException(
                     'Parametro idMacrozona es indefinido',
@@ -36,7 +36,7 @@ export class SectionsService {
                 );
             }
 
-            
+
             if (!name) {
                 throw new HttpException(
                     'Parametro nombre es indefinido',
@@ -61,7 +61,7 @@ export class SectionsService {
             const sectionById = await this.sectionsRepository.findOne({
                 where: { idSection: idSection, deletedAt: null }
             });
-            
+
             if (sectionById) {
                 throw new HttpException(
                     `Seccion con id ${idSection} existe`,
@@ -108,21 +108,21 @@ export class SectionsService {
             const quarters = await this.quartersRepository.find({
                 where: { section: sectionById, deletedAt: null }
             });
-            
+
             if (!quarters) {
                 throw new HttpException(
                     `Cuartel con id ${sectionById.quarter} no existe`,
                     HttpStatus.BAD_REQUEST,
                 );
             }
-    
-                Promise.all(quarters.map(async (quarter) => {
-                    await this.quartersRepository.deleteQuarter(quarter.id);
-                    }));
-                    return await this.sectionsRepository.deleteSection(id);
+
+            Promise.all(quarters.map(async (quarter) => {
+                await this.quartersRepository.deleteQuarter(quarter.id);
+            }));
+            return await this.sectionsRepository.deleteSection(id);
         } catch (error) {
             throw error;
-        }    
+        }
     }
 
     async editSection(id: string, sectionData: InputSectionEdit): Promise<Section> {
@@ -176,7 +176,7 @@ export class SectionsService {
                 );
             }
 
-            const sectionById = await this.sectionsRepository.getSectionByAttribute('','', id);
+            const sectionById = await this.sectionsRepository.getSectionByAttribute('', '', id);
 
             if (!sectionById) {
                 throw new HttpException(
@@ -193,7 +193,7 @@ export class SectionsService {
                 return sectionSucces;
             }
 
-            if(sectionByIdsection.id === sectionById.id) {
+            if (sectionByIdsection.id === sectionById.id) {
                 const sectionEdit = await this.sectionsRepository.editSection(id, sectionData, macrozoneById);
                 const sectionSucces = await this.sectionsRepository.getSectionByAttribute('', '', sectionEdit);
                 return sectionSucces;

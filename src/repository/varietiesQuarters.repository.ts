@@ -12,14 +12,14 @@ export class VarietiesQuartersRepository extends Repository<VarietiesQuarters> {
         try {
             return this.find({
                 relations: ['variety',
-                            'variety.specie',
-                            'quarter',
-                            'quarter.section',
-                            'quarter.section.macrozone',
-                            'quarter.section.macrozone.estate'],
+                    'variety.specie',
+                    'quarter',
+                    'quarter.section',
+                    'quarter.section.macrozone',
+                    'quarter.section.macrozone.estate'],
 
                 where: { deletedAt: null },
-                
+
             });
         } catch (error) {
             throw error;
@@ -30,14 +30,14 @@ export class VarietiesQuartersRepository extends Repository<VarietiesQuarters> {
         try {
             return this.findOne({
                 relations: ['variety',
-                            'variety.specie',
-                            'quarter',
-                            'quarter.section',
-                            'quarter.section.macrozone',
-                            'quarter.section.macrozone.estate'],
+                    'variety.specie',
+                    'quarter',
+                    'quarter.section',
+                    'quarter.section.macrozone',
+                    'quarter.section.macrozone.estate'],
 
                 where: { quarter: quarter, variety: variety, deletedAt: null },
-                
+
             });
         } catch (error) {
             throw error;
@@ -47,7 +47,7 @@ export class VarietiesQuartersRepository extends Repository<VarietiesQuarters> {
     public async insertVarietyQuarter(variety: Varieties, quarter: Quarters): Promise<VarietyQuarter> {
         try {
             const varietyQuarter = new VarietiesQuarters();
-            
+
             varietyQuarter.variety = variety;
             varietyQuarter.quarter = quarter;
 
@@ -68,13 +68,13 @@ export class VarietiesQuartersRepository extends Repository<VarietiesQuarters> {
         try {
 
             if (variety !== null) {
-                varietyQuarter.variety = variety; 
+                varietyQuarter.variety = variety;
             }
 
-            if(quarter !== null) {
+            if (quarter !== null) {
                 varietyQuarter.quarter = quarter;
             }
-            
+
             await varietyQuarter.save();
 
             return varietyQuarter;
@@ -85,18 +85,47 @@ export class VarietiesQuartersRepository extends Repository<VarietiesQuarters> {
 
     public async deleteVarietyQuarter(varietyQuarter: VarietiesQuarters): Promise<VarietiesQuarters> {
         const response = await this.createQueryBuilder('varieties_quarters')
-        .update()
-        .set({
-            deletedAt: new Date()
-        })
-        .where('id_var = :id_var and id_qua = :id_qua', { 
-            id_var: varietyQuarter.variety, 
-            id_qua: varietyQuarter.quarter
-        })
-        .returning('*')
-        .execute();
-
+            .delete()
+            .where('id_var = :id_var and id_qua = :id_qua', {
+                id_var: varietyQuarter.variety,
+                id_qua: varietyQuarter.quarter
+            })
+            .returning('*')
+            .execute();
         return response.raw[0];
+    }
+
+    public async deleteVarietyQuarterById(idVariety?: string, idQuarter?: string): Promise<VarietiesQuarters> {
+
+        if (!idVariety && !idQuarter) {
+            return null;
+        }
+
+        let response = null;
+
+        if (idQuarter) {
+            response = await this.createQueryBuilder('varieties_quarters')
+                .delete()
+                .where('id_qua = :id_qua', {
+                    id_qua: idQuarter
+                })
+                .returning('*')
+                .execute();
+            return response.raw[0];
+        }
+
+        if (idVariety) {
+            response = await this.createQueryBuilder('varieties_quarters')
+                .delete()
+                .where('id_var = :id_var', {
+                    id_var: idVariety
+                })
+                .returning('*')
+                .execute();
+            return response.raw[0];
+        }
+
+        return response;
     }
 
 }
