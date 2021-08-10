@@ -192,7 +192,6 @@ export class StoragePondData {
 export class InputTransportBatch {
     idTransportBatch: string;
     date: Date;
-    condition: string;
     idPelequenGuide?: string;
     idUser: string;
 }
@@ -200,7 +199,6 @@ export class InputTransportBatch {
 export class InputTransportBatchEdit {
     idTransportBatch: string;
     date: Date;
-    condition: string;
 }
 
 export class UserData {
@@ -651,7 +649,6 @@ export class TransportBatch {
     id: string;
     idTransportBatch?: string;
     date: Date;
-    condition?: string;
     pelequenGuide?: PelequenGuide;
     user: User;
     createdAt: Date;

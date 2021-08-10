@@ -27,7 +27,7 @@ export class TransportBatchsService {
     async createTransportBatch(transportBatchData: InputTransportBatch): Promise<TransportBatch> {
         try {
             this.logger.debug(`creating TransportBatch with data=`, JSON.stringify(transportBatchData));
-            const { idUser, date, idPelequenGuide, idTransportBatch, condition } = transportBatchData;
+            const { idUser, date, idPelequenGuide, idTransportBatch } = transportBatchData;
             
             if (!idUser) {
                 throw new HttpException(
@@ -39,13 +39,6 @@ export class TransportBatchsService {
             if (!date) {
                 throw new HttpException(
                     'Parametro fecha es indefinido',
-                    HttpStatus.BAD_REQUEST,
-                );
-            }
-
-            if (!condition) {
-                throw new HttpException(
-                    'Parametro condicion es indefinido',
                     HttpStatus.BAD_REQUEST,
                 );
             }
@@ -103,7 +96,7 @@ export class TransportBatchsService {
     async editTransportBatch(id: string, transportBatchData: InputTransportBatchEdit): Promise<TransportBatch> {
         try {
             this.logger.debug(`updating TransportBatch`);
-            const { idTransportBatch, date, condition } = transportBatchData;
+            const { idTransportBatch, date } = transportBatchData;
 
             if (!id) {
                 throw new HttpException(
@@ -120,13 +113,6 @@ export class TransportBatchsService {
             }
 
             if (!date) {
-                throw new HttpException(
-                    'Parametro fecha es indefinido',
-                    HttpStatus.BAD_REQUEST,
-                );
-            }
-
-            if (!condition) {
                 throw new HttpException(
                     'Parametro fecha es indefinido',
                     HttpStatus.BAD_REQUEST,

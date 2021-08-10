@@ -41,11 +41,10 @@ export class TransportBatchsRepository extends Repository<TransportBatchs> {
 
     public async insertTransportBatch(transportBatchData: InputTransportBatch, user: Users): Promise<string> {
         try {
-            const { idTransportBatch, date, condition } = transportBatchData;
+            const { idTransportBatch, date } = transportBatchData;
             const transportBatch = new TransportBatchs();
             transportBatch.idTransportBatch = idTransportBatch;
             transportBatch.date = date;
-            transportBatch.condition = condition;
             transportBatch.user = user;
 
             await transportBatch.save();
@@ -75,11 +74,10 @@ export class TransportBatchsRepository extends Repository<TransportBatchs> {
             throw new HttpException(`Lote de Transporte con id=${id} no existe`, HttpStatus.BAD_REQUEST);
         }
 
-        const { idTransportBatch, date, condition } = transportBatchData;
+        const { idTransportBatch, date } = transportBatchData;
 
         transportBatch.idTransportBatch = idTransportBatch;
         transportBatch.date = date;
-        transportBatch.condition = condition;
  
         await this.save(transportBatch);
 

@@ -26,9 +26,6 @@ export class TransportBatchs extends BaseEntity {
     @Column({ name: 'date', type: 'timestamp', nullable: true })
     date: Date;
 
-    @Column({ name: 'condition', type: 'text', nullable: true })
-    condition: string;
-
     @Column({ name: 'correlative', type: 'int', nullable: true, generated:'increment' })
     correlative: number;
 

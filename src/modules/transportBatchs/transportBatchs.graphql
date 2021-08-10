@@ -13,7 +13,6 @@ type TransportBatch {
     id:ID!
     idTransportBatch: String
     date: Date!
-    condition: String
     pelequenGuide: PelequenGuide
     user: User!
     createdAt: Date!
@@ -24,7 +23,6 @@ type TransportBatch {
 input InputTransportBatch {
     idTransportBatch: String!
     date: Date!
-    condition: String!
     idPelequenGuide: String
     idUser: String!
 }
@@ -32,5 +30,4 @@ input InputTransportBatch {
 input InputTransportBatchEdit {
     idTransportBatch: String!
     date: Date!
-    condition: String!
 }

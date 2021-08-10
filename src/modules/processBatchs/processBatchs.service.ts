@@ -1,5 +1,4 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
-import { generateIdProcessBatch } from '../../utils/idGenerator';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersRepository } from '../../repository/users.repository';
 import { SaveBatchsRepository } from '../../repository/saveBatchs.repository';
